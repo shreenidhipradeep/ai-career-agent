@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  name         String?
+  createdAt    DateTime      @default(now())
+  profile      Profile?
+  applications Application[]
+}
+
+model Profile {
+  id         String  @id @default(uuid())
+  userId     String  @unique
+  user       User    @relation(fields: [userId], references: [id])
+  skills     String
+  targetRole String
+  location   String
+  workMode   String
+  salaryMin  Int?
+  salaryMax  Int?
+}
+
+model Job {
+  id            String        @id @default(uuid())
+  externalId    String?       @unique
+  title         String
+  company       String
+  companyDomain String?
+  location      String
+  description   String?
+  source        String?
+  createdAt     DateTime      @default(now())
+  applications  Application[]
+}
+
+model Application {
+  id          String       @id @default(uuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  jobId       String
+  job         Job          @relation(fields: [jobId], references: [id])
+  status      String       @default("Applied")
+  appliedAt   DateTime     @default(now())
+  notes       String?
+  resume      Resume?
+  coverLetter CoverLetter?
+  interviews  Interview[]
+}
+
+model Resume {
+  id            String      @id @default(uuid())
+  applicationId String      @unique
+  application   Application @relation(fields: [applicationId], references: [id])
+  content       String
+  createdAt     DateTime    @default(now())
+}
+
+model CoverLetter {
+  id            String      @id @default(uuid())
+  applicationId String      @unique
+  application   Application @relation(fields: [applicationId], references: [id])
+  content       String
+  createdAt     DateTime    @default(now())
+}
+
+model Interview {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id])
+  scheduledAt   DateTime
+  type          String
+  notes         String?
+}
