@@ -28,7 +28,7 @@ model Application {
   user        User         @relation(fields: [userId], references: [id])
   jobId       String
   job         Job          @relation(fields: [jobId], references: [id])
-  status      String       @default("Applied")
+  status      String       @default("Draft")
   appliedAt   DateTime     @default(now())
   notes       String?
   resume      Resume?
