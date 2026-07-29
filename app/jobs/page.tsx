@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { calculateMatch } from "@/lib/matchScore"
 import JobFilters from "./JobFilters"
+import GenerateButton from "./GenerateButton"
 
 export default async function JobsPage({
   searchParams,
@@ -53,6 +54,9 @@ export default async function JobsPage({
                   {match.percent}% match — <span style={{ fontWeight: "normal" }}>{match.explanation}</span>
                 </p>
               )}
+              <div style={{ marginTop: "1rem" }}>
+                <GenerateButton jobId={job.id} />
+              </div>
             </div>
           )
         })}
