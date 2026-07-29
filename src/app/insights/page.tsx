@@ -26,6 +26,32 @@ export default async function InsightsPage() {
   const responded = applications.filter((a) => a.status !== "Applied").length
   const responseRate = total > 0 ? Math.round((responded / total) * 100) : 0
 
+  const applicationsWithJobs = await prisma.application.findMany({
+    where: { userId: user.id },
+    include: { job: true },
+  })
+
+  const skillCounts: Record<string, number> = {}
+  applicationsWithJobs.forEach((a) => {
+    if (!a.job.extractedSkills) return
+    try {
+      const skills: string[] = JSON.parse(a.job.extractedSkills)
+      skills.forEach((s) => {
+        skillCounts[s] = (skillCounts[s] || 0) + 1
+      })
+    } catch (e) {
+      console.error("Error parsing job skills:", e)
+    }
+  })
+
+  const profile = await prisma.profile.findUnique({ where: { userId: user.id } })
+  const userSkills = (profile?.skills || "").toLowerCase()
+
+  const missingSkills = Object.entries(skillCounts)
+    .filter(([skill]) => !userSkills.includes(skill.toLowerCase()))
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+
   return (
     <main style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
       <h1>Insights</h1>
@@ -36,6 +62,19 @@ export default async function InsightsPage() {
           {status}: {count}
         </p>
       ))}
+
+      <h2 style={{ marginTop: "2rem" }}>Top Missing Skills</h2>
+      {missingSkills.length > 0 ? (
+        <ul>
+          {missingSkills.map(([skill, count]) => (
+            <li key={skill}>
+              <strong>{skill}</strong>: missing in {count} job application(s)
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No missing skills found. Great job matching!</p>
+      )}
     </main>
   )
 }
