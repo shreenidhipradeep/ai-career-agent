@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import StatusUpdater from "./StatusUpdater"
 import DisconnectButton from "./DisconnectButton"
 import ScanInbox from "./ScanInbox"
+import InterviewScheduler from "./InterviewScheduler"
 
 const statusColors: Record<string, string> = {
   Draft: "#999",
@@ -20,7 +21,7 @@ export default async function DashboardPage() {
   const user = await prisma.user.findUnique({ where: { email: session.user.email } })
   const applications = await prisma.application.findMany({
     where: { userId: user!.id, status: { not: "Draft" } },
-    include: { job: true },
+    include: { job: true, interviews: true },
     orderBy: { appliedAt: "desc" },
   })
 
@@ -63,6 +64,11 @@ export default async function DashboardPage() {
               applicationId={app.id}
               currentStatus={app.status}
               currentNotes={app.notes}
+            />
+
+            <InterviewScheduler
+              applicationId={app.id}
+              existingInterviews={app.interviews}
             />
           </div>
         ))}
