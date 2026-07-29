@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "../../../auth"
 import { redirect } from "next/navigation"
 import StatusUpdater from "./StatusUpdater"
+import DisconnectButton from "./DisconnectButton"
 
 const statusColors: Record<string, string> = {
   Draft: "#999",
@@ -24,7 +25,10 @@ export default async function DashboardPage() {
 
   return (
     <main style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-      <h1>My Applications</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>My Applications</h1>
+        <DisconnectButton />
+      </div>
       <p>{applications.length} applications</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1.5rem" }}>

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
-import prisma from "@/lib/prisma"
+import { prisma } from "@/lib/prisma"
 import { auth } from "../../../../../auth"
-import { generateTailoredResume, generateCoverLetter } from "@/lib/generate"
+import { generateTailoredResume, generateCoverLetter } from "@/src/lib/generate"
 
 export async function POST(req: Request) {
   const session = await auth()

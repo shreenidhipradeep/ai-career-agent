@@ -98,6 +98,12 @@ export default async function Home() {
               >
                 Browse Jobs
               </Link>
+              <Link
+                className="flex h-12 items-center justify-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900 shadow-sm px-8"
+                href="/dashboard"
+              >
+                My Applications
+              </Link>
             </div>
           ) : (
             <div className="text-sm text-zinc-500 dark:text-zinc-400 italic">

@@ -1,5 +1,5 @@
 // Review Page Placeholder
-import prisma from "@/lib/prisma"
+import { prisma } from "@/lib/prisma"
 import ApproveButton from "./ApproveButton"
 
 export default async function ReviewPage({ params }: { params: Promise<{ id: string }> }) {
