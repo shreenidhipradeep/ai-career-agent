@@ -27,3 +27,16 @@ Return the tailored resume as plain text with a "Summary" section and an "Experi
 
   return callGroq(prompt)
 }
+export async function generateCoverLetter(profileSummary: string, targetRole: string, jobTitle: string, company: string, jobDescription: string) {
+  const prompt = `Write a short, personalized cover letter (under 250 words) for this candidate applying to this job. Be specific to the role and company, not generic.
+
+Candidate background: ${profileSummary}
+Candidate's target role: ${targetRole}
+
+Job: ${jobTitle} at ${company}
+Job description: ${jobDescription}
+
+Return only the cover letter text, no subject line, no placeholders like [Your Name].`
+
+  return callGroq(prompt)
+}
