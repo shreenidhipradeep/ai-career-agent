@@ -3,6 +3,7 @@ import { auth } from "../../../auth"
 import { redirect } from "next/navigation"
 import StatusUpdater from "./StatusUpdater"
 import DisconnectButton from "./DisconnectButton"
+import ScanInbox from "./ScanInbox"
 
 const statusColors: Record<string, string> = {
   Draft: "#999",
@@ -29,6 +30,7 @@ export default async function DashboardPage() {
         <h1>My Applications</h1>
         <DisconnectButton />
       </div>
+      <ScanInbox />
       <p>{applications.length} applications</p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1.5rem" }}>
